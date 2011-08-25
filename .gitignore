@@ -1,0 +1,7 @@
+*.exe
+*.so
+*.bak
+objs
+lib
+Debug
+Release

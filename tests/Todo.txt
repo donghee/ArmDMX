@@ -1,0 +1,14 @@
+﻿TODO: 
+ x color(0,0,0) rgb 입력받아서 color 만드는 함수 작성 
+ x make_strips(strip_size) 스트립크기에 맞추어 픽셀 배열만들기.
+   - uint32_t *pixels; 
+   - pixels = (uint32_t *)malloc(size*(uint32_t))
+ x set_pixel_color(i, color());픽셀 지정하기
+ x show ws2801에 부려주기
+  - send_all_pixels() 
+  - clock 타이밍 이해하기.  낮았다가 높은 사이에 데이터 전달. 끝나면 LOW
+ x ws2801_setup 
+  - pin setting clock_pin, data_pin
+  - pixels setting
+  
+ 
