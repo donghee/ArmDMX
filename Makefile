@@ -17,7 +17,8 @@ CPPUTEST_USE_EXTENSIONS = Y
 CPP_PLATFORM = Gcc
 
 ##
-WARNINGFLAGS += -Wall -Werror -Wswitch-default -Wswitch-enum 
+#WARNINGFLAGS += -Wall -Werror -Wswitch-default -Wswitch-enum 
+WARNINGFLAGS += -Wall -Wswitch-default -Wswitch-enum
 MEMLEAK_DETECTOR_NEW_MACROS += -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorNewMacros.h
 MEMLEAK_DETECTOR_MALLOC_MACROS += -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorMallocMacros.h
 
@@ -70,3 +71,10 @@ LDFLAGS +=
 LD_LIBRARIES += -lstdc++
 
 include $(CPPUTEST_HOME)/build/ComponentMakefile
+
+.PHONY: ctags
+ctags:
+	rm -f TAGS
+	ctags -eR
+	#dir *.h *.cpp *.c /s/b > cscope.files
+	#cscope -b

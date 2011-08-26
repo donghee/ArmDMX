@@ -22,6 +22,17 @@ uint16_t pixels_length;
 uint8_t data_pin;
 uint8_t clock_pin;
 
+
+struct strip
+{
+	uint8_t data_pin;
+	uint8_t clock_pin;
+    uint16_t length;
+    uint32_t* pixels;
+};
+
+//struct strip *strips;
+
 void ws2801_setup(uint16_t size, uint8_t data_pin, uint8_t clock_pin);
 void make_strip(uint16_t size);
 void free_strip();

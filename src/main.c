@@ -18,6 +18,7 @@
 #include "gpio.h"
 #include "_gpio.h"
 #include "WS2801/WS2801.h"
+#include "WS2801/utils.h"
 
 #define LED_PORT 0
 #define LED_BIT 7
@@ -30,24 +31,10 @@
 // See crp.h header for more information
 __CRP const unsigned int CRP_WORD = CRP_NO_CRP ;
 
-#include <stdio.h>
 // TODO: insert other definitions and declarations here
 
 #define DMX_NUMBER 2
 uint32_t dmx_1_value;
-
-
-void rainbow(uint8_t wait)
-{
-	uint8_t i,j;
-	for (j=0; j<256; j++) {
-		for (i =0; i< pixels_length; i++) {
-			set_pixel_color(i, wheel(((i*40)+j) %255));
-		}
-		strip_show();
-		delayms(wait);
-	}
-}
 
 int main(void) {
 	int i;

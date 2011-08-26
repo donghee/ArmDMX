@@ -1,6 +1,5 @@
 #include "LPC11xx.h"
 #include "dmx.h"
-#include <stdio.h>
 
 void UART_IRQHandler(void)
 {

@@ -4,6 +4,8 @@
 extern "C"
 {
 #include "WS2801.h"
+#include "utils.h"
+
 #include "LPC11xx.h"
 #include "gpio.h"
 }
@@ -36,6 +38,7 @@ TEST(WS2801, make_strip)
 	}
 	free_strip();
 }
+
 
 TEST(WS2801, set_pixel_color)
 {
@@ -93,3 +96,63 @@ TEST(WS2801, wheel)
 	LONGS_EQUAL(color(0xff,0,0), wheel(85));
 	LONGS_EQUAL(color(0,0xff,0), wheel(255));
 }
+
+TEST(WS2801, utils_rainbow)
+{
+	ws2801_setup(10,4,3);
+    // rainbow(100); //delay is 100 ms
+	free_strip();
+}
+
+// mock usage: https://github.com/dh/EmbeddedTddWorkshop/blob/master/ChordedKeyboard/tests/test_keyboard.cpp
+TEST(WS2801, make_strips)
+{
+	uint16_t led_size = 100;
+    uint8_t channel_size =4;
+    struct strip* strips;
+
+	strips = make_strips(channel_size, led_size);
+
+	set_data_clock_pin(&strips[0],3,4);
+	set_data_clock_pin(&strips[1],5,6);
+	set_data_clock_pin(&strips[2],7,8);
+	set_data_clock_pin(&strips[3],9,10);
+
+	LONGS_EQUAL(3, strips[0].data_pin);
+	LONGS_EQUAL(4, strips[0].clock_pin);
+	LONGS_EQUAL(5, strips[1].data_pin);
+	LONGS_EQUAL(6, strips[1].clock_pin);
+	LONGS_EQUAL(7, strips[2].data_pin);
+	LONGS_EQUAL(8, strips[2].clock_pin);
+	LONGS_EQUAL(9, strips[3].data_pin);
+	LONGS_EQUAL(10, strips[3].clock_pin);
+
+	uint16_t ch,i;
+    for (ch =0; ch<4; ch++) {
+        for (i=0;i<100;i++) {
+            LONGS_EQUAL(0, strips[ch].pixels[i]);
+        }
+    }
+
+    set_color(&strips[1],0,color(0,0,1));
+    LONGS_EQUAL(color(0,0,1), strips[1].pixels[0]);
+
+    set_color(&strips[1],99,color(0xff,0xff,0xff));
+    LONGS_EQUAL(color(0xff,0xff,0xff), strips[1].pixels[99]);
+
+    set_color(&strips[2],00,color(0xff,0xff,0x00));
+    LONGS_EQUAL(color(0xff,0xff,0x00), strips[2].pixels[00]);
+
+    set_color(&strips[3],99,color(0xff,0x00,0xff));
+    LONGS_EQUAL(color(0xff,0x00,0xff), strips[3].pixels[99]);
+
+    show(strips);
+
+	free_strips(strips);
+}
+
+
+	// set_pixel_color(0, color(0,0,1));
+	// set_pixel_color(9, color(0,0,2));
+	// strip_show();
+
