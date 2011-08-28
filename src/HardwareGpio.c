@@ -1,13 +1,12 @@
-#include "_gpio.h"
+#include "HardwareGpio.h"
+#include "gpio.h"
 
-
-
-void pin_mode(uint8_t pin, uint8_t mode)
+void pinMode(uint8_t pin, uint8_t mode)
 {
  	GPIOSetDir(PORT, pin, mode);
 }
 
-void digital_write(uint8_t pin, uint8_t  bitVal)
+void digitalWrite(uint8_t pin, uint8_t  bitVal)
 {
 	GPIOSetValue(PORT, pin, bitVal);
 }

@@ -7,18 +7,40 @@ extern "C"
 #include "utils.h"
 
 #include "LPC11xx.h"
-#include "gpio.h"
+#include "FakeHardwareGpio.h"
 }
 
 TEST_GROUP(WS2801)
 {
+
+
+    static void mock_pinMode(uint8_t pin, uint8_t mode) {
+        mock().actualCall("pinMode").
+            withParameter("pin", pin).
+            withParameter("mode", mode);
+    }
+
+    static void mock_digitalWrite(uint8_t pin, uint8_t bitVal) {
+        mock().actualCall("digitalWrite").
+            withParameter("pin", pin).
+            withParameter("bitVal", bitVal);
+    }
+    
 	void setup()
     {
+        UT_PTR_SET(pinMode, &mock_pinMode);
+        UT_PTR_SET(digitalWrite, &mock_digitalWrite);        
     }
     void teardown()
     {
     }
 };
+
+void mock_expect_pinMode(int pin1, int pin2, int value)
+{
+    mock().expectOneCall("pinMode").withParameter("pin", pin1).withParameter("mode",value);
+    mock().expectOneCall("pinMode").withParameter("pin", pin2).withParameter("mode",value);
+}
 
 TEST(WS2801, color)
 {
@@ -26,71 +48,74 @@ TEST(WS2801, color)
     LONGS_EQUAL(16777215, color(0xff, 0xff, 0xff));
 }
 
-TEST(WS2801, make_strip)
+TEST(WS2801, Strip_new_free)
 {
-	uint16_t LEDS_SIZE = 100;
-	make_strip(LEDS_SIZE);
+    mock_expect_pinMode(3,4,1);
 
+	uint16_t led_size = 100;
+    Strip* strip = Strip_new(led_size, 3, 4);
+    
 	uint16_t i;
 	for (i=0;i<100;i++)
 	{
-		LONGS_EQUAL(0, pixels[i]);
+		LONGS_EQUAL(0, strip->pixels[i]);
 	}
-	free_strip();
+    Strip_free(strip);
 }
 
-
-TEST(WS2801, set_pixel_color)
+TEST(WS2801, Strip_setPixel)
 {
-	// strip 사이즈보다 크면 지정 안함 안함
-	make_strip(10);
-	set_pixel_color(0, color(0,0,0));
-	LONGS_EQUAL(0, pixels[0]);
-	free_strip();
+    mock_expect_pinMode(3,4,1);
+    
+    uint16_t led_size = 10;
+    Strip* strip = Strip_new(led_size, 3,4);
+    Strip_setPixel(strip, 0, color(0,0,1));
+    LONGS_EQUAL(color(0,0,1), strip->pixels[0]);
 
-	make_strip(10);
-	set_pixel_color(15, color(0,0,0));
-	//NOT_EQUAL(0, pixels[15]);
-	free_strip();
+    Strip_setPixel(strip, 9, color(0xff,0xff,0xff));
+    LONGS_EQUAL(color(0xff,0xff,0xff), strip->pixels[9]);
+
+    Strip_free(strip);
 }
 
-TEST(WS2801, ws2801_setup)
+TEST(WS2801, Strip_show)
 {
-	ws2801_setup(10, 4, 3); // leds length, data_pin, clock_pin;
-	LONGS_EQUAL(4, data_pin);
-	LONGS_EQUAL(3, clock_pin);
-	LONGS_EQUAL(0, pixels[0]);
-	free_strip();
+    int data_pin = 3;
+    int clock_pin = 4;
+    uint16_t led_size = 10;
+    
+    UT_PTR_SET(pinMode, &Fake_pinMode);                   
+    UT_PTR_SET(digitalWrite, &Fake_digitalWrite);               
+
+    Strip* strip = Strip_new(led_size, data_pin,clock_pin);
+    Strip_setPixel(strip, 0, color(0,0,1));
+    Strip_setPixel(strip, 9, color(0xff,0xff,0xff));
+
+    Strip_show(strip);
+    Strip_free(strip);
 }
 
-TEST(WS2801, strip_show)
+TEST(WS2801, Strip_rgb_setup)
 {
-	ws2801_setup(10,4,3); // leds length, data_pin, clock_pin;
-	set_pixel_color(0, color(0,0,1));
-	set_pixel_color(9, color(0,0,2));
-	strip_show();
-	LONGS_EQUAL(color(0,0,1), pixels[0]);
-	LONGS_EQUAL(color(0,0,2), pixels[9]);
-	free_strip();
+    int data_pin = 3;
+    int clock_pin = 4;
+    
+    UT_PTR_SET(pinMode, &Fake_pinMode);
+    
+    int i;
+    for (i=0b100000000000000000000000; i>0; i>>=1)
+        {
+            mock().expectOneCall("digitalWrite").withParameter("pin",
+                                                               clock_pin).withParameter("bitVal",LOW);
+            mock().expectOneCall("digitalWrite").withParameter("pin",
+                                                               data_pin).withParameter("bitVal",LOW);
+            mock().expectOneCall("digitalWrite").withParameter("pin",
+                                                               clock_pin).withParameter("bitVal",HIGH);
+        }
+    rgb_step(color(0,0,0),data_pin, clock_pin);
 }
 
-//TEST(WS2801, get_graydata)
-//{
-//	LONGS_EQUAL(0xf0, get_graydata(color(0xf0, 0xf1, 0xf2), RED));
-//	LONGS_EQUAL(0xf1, get_graydata(color(0xf0, 0xf1, 0xf2), GREEN));
-//	LONGS_EQUAL(0xf2, get_graydata(color(0xf0, 0xf1, 0xf2), BLUE));
-//}
-
-TEST(WS2801, strip_one_step)
-{
-	ws2801_setup(10,4,3);
-	LONGS_EQUAL(0, pixels[0]);
-	rgb_step(color(0,0,0));
-	free_strip();
-}
-
-
-TEST(WS2801, wheel)
+TEST(WS2801, utils_wheel)
 {
 	LONGS_EQUAL(color(0,0xff,0), wheel(0));
 	LONGS_EQUAL(color(0xff,0,0), wheel(85));
@@ -99,60 +124,57 @@ TEST(WS2801, wheel)
 
 TEST(WS2801, utils_rainbow)
 {
-	ws2801_setup(10,4,3);
-    // rainbow(100); //delay is 100 ms
-	free_strip();
+    UT_PTR_SET(pinMode, &Fake_pinMode);    
+    UT_PTR_SET(digitalWrite, &Fake_digitalWrite);
+    
+    uint16_t led_size = 10;
+    Strip* strip = Strip_new(led_size, 3,4);    
+    rainbow(strip, 100); //delay is 100 ms
+    Strip_free(strip);
 }
 
-// mock usage: https://github.com/dh/EmbeddedTddWorkshop/blob/master/ChordedKeyboard/tests/test_keyboard.cpp
-TEST(WS2801, make_strips)
-{
+TEST(WS2801, Four_Strips) {
+    UT_PTR_SET(pinMode, &Fake_pinMode);    
+    UT_PTR_SET(digitalWrite, &Fake_digitalWrite);
+
+    uint8_t i;
 	uint16_t led_size = 100;
-    uint8_t channel_size =4;
-    struct strip* strips;
+    Strip* strip1 = Strip_new(led_size, 3,4);
+    Strip* strip2 = Strip_new(led_size, 5,6);
+    Strip* strip3 = Strip_new(led_size, 7,8);        
+    Strip* strip4 = Strip_new(led_size+2, 9,10);
 
-	strips = make_strips(channel_size, led_size);
+    LONGS_EQUAL(3, strip1->data_pin);
+    LONGS_EQUAL(4, strip1->clock_pin);
 
-	set_data_clock_pin(&strips[0],3,4);
-	set_data_clock_pin(&strips[1],5,6);
-	set_data_clock_pin(&strips[2],7,8);
-	set_data_clock_pin(&strips[3],9,10);
-
-	LONGS_EQUAL(3, strips[0].data_pin);
-	LONGS_EQUAL(4, strips[0].clock_pin);
-	LONGS_EQUAL(5, strips[1].data_pin);
-	LONGS_EQUAL(6, strips[1].clock_pin);
-	LONGS_EQUAL(7, strips[2].data_pin);
-	LONGS_EQUAL(8, strips[2].clock_pin);
-	LONGS_EQUAL(9, strips[3].data_pin);
-	LONGS_EQUAL(10, strips[3].clock_pin);
-
-	uint16_t ch,i;
-    for (ch =0; ch<4; ch++) {
-        for (i=0;i<100;i++) {
-            LONGS_EQUAL(0, strips[ch].pixels[i]);
-        }
+    for(i=0; i< 100; i++) {
+        LONGS_EQUAL(0, strip1->pixels[i]);
     }
+    
+    LONGS_EQUAL(5, strip2->data_pin);
+    LONGS_EQUAL(6, strip2->clock_pin);
 
-    set_color(&strips[1],0,color(0,0,1));
-    LONGS_EQUAL(color(0,0,1), strips[1].pixels[0]);
+    LONGS_EQUAL(7, strip3->data_pin);
+    LONGS_EQUAL(8, strip3->clock_pin);
 
-    set_color(&strips[1],99,color(0xff,0xff,0xff));
-    LONGS_EQUAL(color(0xff,0xff,0xff), strips[1].pixels[99]);
+    LONGS_EQUAL(9, strip4->data_pin);
+    LONGS_EQUAL(10, strip4->clock_pin);
 
-    set_color(&strips[2],00,color(0xff,0xff,0x00));
-    LONGS_EQUAL(color(0xff,0xff,0x00), strips[2].pixels[00]);
 
-    set_color(&strips[3],99,color(0xff,0x00,0xff));
-    LONGS_EQUAL(color(0xff,0x00,0xff), strips[3].pixels[99]);
+    Strip_setPixel(strip1, 0, color(0,0,1));
+    LONGS_EQUAL(color(0,0,1), strip1->pixels[0]);
 
-    show(strips);
+    Strip_setPixel(strip2, 0, color(0xff,0xff,0xff));
+    LONGS_EQUAL(color(0xff,0xff,0xff), strip2->pixels[0]);
 
-	free_strips(strips);
+    Strip_setPixel(strip3, 99, color(0xff,0x00,0xff));
+    LONGS_EQUAL(color(0xff,0x00,0xff), strip3->pixels[99]);
+
+    Strip_setPixel(strip4, 101, color(0xf0,0x00,0xff));
+    LONGS_EQUAL(color(0xf0,0x00,0xff), strip4->pixels[101]);
+    
+    Strip_free(strip1);
+    Strip_free(strip2);
+    Strip_free(strip3);
+    Strip_free(strip4);        
 }
-
-
-	// set_pixel_color(0, color(0,0,1));
-	// set_pixel_color(9, color(0,0,2));
-	// strip_show();
-

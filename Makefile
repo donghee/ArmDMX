@@ -59,7 +59,7 @@ tests \
 #includes for all compiles
 INCLUDE_DIRS =\
   $(CPPUTEST_HOME)/include/\
-  mocks/\
+  include/\
   tests/\
   src/WS2801/ \
 

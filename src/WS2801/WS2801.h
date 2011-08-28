@@ -1,11 +1,11 @@
 #ifndef ___WS2801_H__
 #define ___WS2801_H__
 
-#ifdef WIN32
-	#include "gpio.h"
-#else
-	#include "../_gpio.h"
-#endif
+/* #ifdef WIN32 */
+#include "HardwareGpio.h"
+/* #else */
+/* 	#include "../_gpio.h" */
+/* #endif */
 
 #define RED 2
 #define GREEN 1
@@ -15,32 +15,24 @@
 #include "LPC11xx.h"
 
 uint32_t color(uint8_t r, uint8_t g, uint8_t b);
-uint32_t wheel(uint8_t position);
-
-uint32_t* pixels;
-uint16_t pixels_length;
-uint8_t data_pin;
-uint8_t clock_pin;
 
 
-struct strip
+typedef struct
 {
 	uint8_t data_pin;
 	uint8_t clock_pin;
     uint16_t length;
     uint32_t* pixels;
-};
+} Strip;
 
-//struct strip *strips;
 
-void ws2801_setup(uint16_t size, uint8_t data_pin, uint8_t clock_pin);
-void make_strip(uint16_t size);
-void free_strip();
+Strip* Strip_new(uint16_t led_size, uint8_t data_pin, uint8_t clock_pin);
+void Strip_free(Strip* self);
+void Strip_setPixel(Strip* self, uint16_t index, uint32_t color);
 
-void set_pixel_color(uint16_t index, uint32_t color);
 
-void strip_show();
-void rgb_step(uint32_t color);
-uint8_t get_graydata(uint32_t color, uint8_t rgb);
+void Strip_show(Strip* strip);
+void rgb_step(uint32_t color, uint8_t data_pin, uint8_t clock_pin);
+
 
 #endif
