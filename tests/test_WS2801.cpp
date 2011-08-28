@@ -103,7 +103,7 @@ TEST(WS2801, Strip_rgb_setup)
     UT_PTR_SET(pinMode, &Fake_pinMode);
     
     int i;
-    for (i=0b100000000000000000000000; i>0; i>>=1)
+    for (i=0; i<24; i++)
         {
             mock().expectOneCall("digitalWrite").withParameter("pin",
                                                                clock_pin).withParameter("bitVal",LOW);
@@ -115,23 +115,6 @@ TEST(WS2801, Strip_rgb_setup)
     rgb_step(color(0,0,0),data_pin, clock_pin);
 }
 
-TEST(WS2801, utils_wheel)
-{
-	LONGS_EQUAL(color(0,0xff,0), wheel(0));
-	LONGS_EQUAL(color(0xff,0,0), wheel(85));
-	LONGS_EQUAL(color(0,0xff,0), wheel(255));
-}
-
-TEST(WS2801, utils_rainbow)
-{
-    UT_PTR_SET(pinMode, &Fake_pinMode);    
-    UT_PTR_SET(digitalWrite, &Fake_digitalWrite);
-    
-    uint16_t led_size = 10;
-    Strip* strip = Strip_new(led_size, 3,4);    
-    rainbow(strip, 100); //delay is 100 ms
-    Strip_free(strip);
-}
 
 TEST(WS2801, Four_Strips) {
     UT_PTR_SET(pinMode, &Fake_pinMode);    
@@ -177,4 +160,23 @@ TEST(WS2801, Four_Strips) {
     Strip_free(strip2);
     Strip_free(strip3);
     Strip_free(strip4);        
+}
+
+
+TEST(WS2801, Utils_wheel)
+{
+	LONGS_EQUAL(color(0,0xff,0), wheel(0));
+	LONGS_EQUAL(color(0xff,0,0), wheel(85));
+	LONGS_EQUAL(color(0,0xff,0), wheel(255));
+}
+
+TEST(WS2801, Utils_rainbow)
+{
+    UT_PTR_SET(pinMode, &Fake_pinMode);    
+    UT_PTR_SET(digitalWrite, &Fake_digitalWrite);
+    
+    uint16_t led_size = 10;
+    Strip* strip = Strip_new(led_size, 3,4);    
+    rainbow(strip, 100); //delay is 100 ms
+    Strip_free(strip);
 }
