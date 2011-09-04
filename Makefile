@@ -47,6 +47,7 @@ CPPUTEST_CFLAGS += $(MEMLEAK_DETECTOR_MALLOC_MACROS)
 #put them into an AllTests.h file in each directory
 SRC_DIRS = \
 src/WS2801/ \
+src/eeprom/ \
 
 #TEST_SRC_DIRS is a list of directories including 
 # - A test main (AllTests.cpp by conventin)
@@ -62,6 +63,7 @@ INCLUDE_DIRS =\
   include/\
   tests/\
   src/WS2801/ \
+  src/eeprom/ \
 
 MOCKS_SRC_DIRS =\
   mocks
@@ -77,4 +79,5 @@ ctags:
 	rm -f TAGS
 	ctags -eR
 	#dir *.h *.cpp *.c /s/b > cscope.files
+	find . \( -name '*.c' -o -name '*.cpp' -o -name '*.cc' -o -name '*.h' -o -name '*.s' -o -name '*.S' \) -print > cscope.files
 	#cscope -b
