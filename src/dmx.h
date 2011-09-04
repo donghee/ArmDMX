@@ -2,7 +2,7 @@
  * dmx.h
  *
  *  Created on: 2011. 8. 16.
- *      Author: my
+ *      Author: Future Electronics Technology Mixer
  */
 
 #ifndef UART_H_
@@ -27,11 +27,8 @@
 #define LSR_RXFE	0x80
 #define DMX_SIZE	513
 
-
-void UARTInit(uint32_t baudrate);
+void DMXInit(uint32_t baudrate);
 void UART_IRQHandler(void);
-
-
 
 #endif /* UART_H_ */
 

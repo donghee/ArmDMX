@@ -3,11 +3,17 @@
 
 void pinMode(uint8_t pin, uint8_t mode)
 {
+	uint8_t PORT = pin/10;
+	pin = pin%10;
+
  	GPIOSetDir(PORT, pin, mode);
 }
 
 void digitalWrite(uint8_t pin, uint8_t  bitVal)
 {
+	uint8_t PORT = pin/10;
+	pin = pin%10;
+
 	GPIOSetValue(PORT, pin, bitVal);
 }
 

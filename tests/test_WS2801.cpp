@@ -13,7 +13,6 @@ extern "C"
 TEST_GROUP(WS2801)
 {
 
-
     static void mock_pinMode(uint8_t pin, uint8_t mode) {
         mock().actualCall("pinMode").
             withParameter("pin", pin).
@@ -74,6 +73,20 @@ TEST(WS2801, Strip_setPixel)
 
     Strip_setPixel(strip, 9, color(0xff,0xff,0xff));
     LONGS_EQUAL(color(0xff,0xff,0xff), strip->pixels[9]);
+
+    Strip_free(strip);
+}
+
+TEST(WS2801, Strip_setPixels)
+{
+    mock_expect_pinMode(3,4,1);
+
+    uint16_t led_size = 10;
+    Strip* strip = Strip_new(led_size, 3,4);
+
+    Strip_setPixels(strip, color(1,1,1));
+    LONGS_EQUAL(color(1,1,1), strip->pixels[0]);
+    LONGS_EQUAL(color(1,1,1), strip->pixels[led_size-1]);
 
     Strip_free(strip);
 }

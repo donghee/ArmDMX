@@ -1,3 +1,10 @@
+/*
+ * dmx.c
+ *
+ *  Created on: 2011. 8. 16.
+ *      Author: Future Electronics Technology Mixer
+ */
+
 #include "LPC11xx.h"
 #include "dmx.h"
 
@@ -22,7 +29,7 @@ void UART_IRQHandler(void)
 	}
 }
 
-void UARTInit(uint32_t baudrate)
+void DMXInit(uint32_t baudrate)
 {
   uint32_t Fdiv;
   uint32_t regVal;

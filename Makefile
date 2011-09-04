@@ -46,7 +46,7 @@ CPPUTEST_CFLAGS += $(MEMLEAK_DETECTOR_MALLOC_MACROS)
 #to be included in main to force them to be linked in.  By convention
 #put them into an AllTests.h file in each directory
 SRC_DIRS = \
-src/* \
+src/WS2801/ \
 
 #TEST_SRC_DIRS is a list of directories including 
 # - A test main (AllTests.cpp by conventin)

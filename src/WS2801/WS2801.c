@@ -33,12 +33,21 @@ void Strip_free(Strip* self)
     free(self);
 }
 
+
 void Strip_setPixel(Strip* self, uint16_t index, uint32_t color)
 {
     if (index >= self->length) return;
     self->pixels[index] = color;
 }
 
+void Strip_setPixels(Strip* self, uint32_t color)
+{
+	uint16_t i;
+	for (i=0; i< self->length; i++)
+	{
+		Strip_setPixel(self, i, color);
+	}
+}
 
 void Strip_show(Strip* strip)
 {

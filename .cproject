@@ -38,6 +38,7 @@
 								<option id="gnu.c.compiler.option.include.paths.2048443878" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CMSISv2p00_LPC11xx/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LPC11xx_cmsis2_Lib/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/DMX_spike/src}&quot;"/>
 								</option>
 								<inputType id="com.crt.advproject.compiler.input.1869817154" superClass="com.crt.advproject.compiler.input"/>
 							</tool>
