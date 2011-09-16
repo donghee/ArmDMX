@@ -48,6 +48,7 @@ CPPUTEST_CFLAGS += $(MEMLEAK_DETECTOR_MALLOC_MACROS)
 SRC_DIRS = \
 src/WS2801/ \
 src/eeprom/ \
+src/utils/ \
 
 #TEST_SRC_DIRS is a list of directories including 
 # - A test main (AllTests.cpp by conventin)
@@ -64,6 +65,7 @@ INCLUDE_DIRS =\
   tests/\
   src/WS2801/ \
   src/eeprom/ \
+  src/utils/ \
 
 MOCKS_SRC_DIRS =\
   mocks

@@ -16,6 +16,39 @@ void digitalWrite(uint8_t pin, uint8_t  bitVal)
 
 	GPIOSetValue(PORT, pin, bitVal);
 }
+uint8_t digitalPortPinRead(uint8_t port, uint8_t pin)
+{
+
+	uint8_t value;
+
+	switch ( port )
+	{
+		case PORT0:
+			value = LPC_GPIO0->MASKED_ACCESS[(1<<pin)] ? 1 : 0;
+		break;
+		case PORT1:
+			value = LPC_GPIO1->MASKED_ACCESS[(1<<pin)] ? 1 : 0;
+		break;
+		case PORT2:
+			value = LPC_GPIO2->MASKED_ACCESS[(1<<pin)] ? 1 : 0;
+		break;
+		case PORT3:
+			value = LPC_GPIO3->MASKED_ACCESS[(1<<pin)] ? 1 : 0;
+		break;
+		default:
+		  break;
+	  }
+
+	return value;
+}
+
+uint8_t digitalRead(uint8_t pin)
+{
+	uint8_t port = pin/10;
+	pin = pin%10;
+
+	digitalPortPinRead(port, pin);
+}
 
 void delayms(uint32_t millis)
 {

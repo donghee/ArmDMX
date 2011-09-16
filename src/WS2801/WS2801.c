@@ -72,6 +72,8 @@ void rgb_step(uint32_t color, uint8_t data_pin, uint8_t clock_pin)
             digitalWrite(data_pin, HIGH);
         else
             digitalWrite(data_pin, LOW);
+        delayus(2); // TOFIX: delete
         digitalWrite(clock_pin, HIGH);    // latch on clock rise
+        delayus(2);
 	}
 }

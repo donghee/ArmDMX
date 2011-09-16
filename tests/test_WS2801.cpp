@@ -8,8 +8,7 @@ extern "C"
 
 #include "LPC11xx.h"
 #include "FakeHardwareGpio.h"
-}
-
+} 
 TEST_GROUP(WS2801)
 {
 

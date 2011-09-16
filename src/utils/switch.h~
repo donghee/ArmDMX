@@ -1,0 +1,7 @@
+#ifndef ___SWITCH_H__
+#define ___SWITCH_H__
+
+#include "HardwareGpio.h"
+
+#endif
+
