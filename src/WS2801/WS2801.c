@@ -24,6 +24,9 @@ Strip* Strip_new(uint16_t led_size, uint8_t data_pin, uint8_t clock_pin)
     pinMode(data_pin, OUT);
     pinMode(clock_pin, OUT);
     
+	digitalWrite(self->clock_pin, HIGH); // clock pull up
+
+
     return self;
 }
 
@@ -59,8 +62,7 @@ void Strip_show(Strip* strip)
 	{
 		rgb_step(strip->pixels[i], strip->data_pin, strip->clock_pin);
 	}
-	digitalWrite(strip->clock_pin, LOW);
-    
+	digitalWrite(strip->clock_pin, HIGH);
 }
 
 void rgb_step(uint32_t color, uint8_t data_pin, uint8_t clock_pin)
@@ -72,8 +74,8 @@ void rgb_step(uint32_t color, uint8_t data_pin, uint8_t clock_pin)
             digitalWrite(data_pin, HIGH);
         else
             digitalWrite(data_pin, LOW);
-        delayus(2); // TOFIX: delete
+        delayus(5); // TOFIX: delete
         digitalWrite(clock_pin, HIGH);    // latch on clock rise
-        delayus(2);
+        delayus(5);
 	}
 }

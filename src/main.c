@@ -48,13 +48,18 @@ int main(void) {
  	GPIOSetDir(INDICATOR_LED_PORT, INDICATOR_LED_BIT, 1);
  	GPIOSetValue(INDICATOR_LED_PORT, INDICATOR_LED_BIT, LED_ON );
 
-	DMXInit(250000);
+//	DMXInit(250000);
 
 	ch = get_channel();
-	strip = Strip_new(256,20,21);
+	strip = Strip_new(32,20,21);
 	while(1){
-	//	rainbow(strip,10);
-
+		rainbow(strip,100);
+		//delayms(1000);
+/*
+		Strip_setPixels(strip, color(0,0,0));
+		Strip_show(strip);
+*/
+		/*
 		for(i =0; i < 250; i++) {
 			Strip_setPixels(strip, color(0,0,0));
 			Strip_setPixel(strip,i, color(255,255,255));
@@ -63,6 +68,7 @@ int main(void) {
 			Strip_show(strip);
 			delayms(5000);
 		}
+		*/
 
 		if (rx_count !=0) {
 
