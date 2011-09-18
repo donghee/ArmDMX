@@ -2,7 +2,7 @@
 #define __FAKE_HARDWARE_GPIO_H__
 
 #include "LPC11xx.h"
-#include "HardwareGpio.h"
+#include "HardwareUtils.h"
 
 void Fake_pinMode(uint8_t pin, uint8_t mode);
 void Fake_digitalWrite(uint8_t pin, uint8_t bitVal);

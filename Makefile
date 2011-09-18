@@ -46,9 +46,10 @@ CPPUTEST_CFLAGS += $(MEMLEAK_DETECTOR_MALLOC_MACROS)
 #to be included in main to force them to be linked in.  By convention
 #put them into an AllTests.h file in each directory
 SRC_DIRS = \
-src/WS2801/ \
-src/eeprom/ \
-src/utils/ \
+  driver/WS2801 \
+  driver/eeprom \
+  driver/switch \
+  # driver/dmx \
 
 #TEST_SRC_DIRS is a list of directories including 
 # - A test main (AllTests.cpp by conventin)
@@ -56,16 +57,17 @@ src/utils/ \
 # - Consequently - AllTests.h containing the IMPORT_TEST_GROUPS is not needed
 # - 
 TEST_SRC_DIRS = \
-tests \
+  tests \
 
 #includes for all compiles
 INCLUDE_DIRS =\
   $(CPPUTEST_HOME)/include/\
-  include/\
-  tests/\
-  src/WS2801/ \
-  src/eeprom/ \
-  src/utils/ \
+  include/ \
+  tests/ \
+  driver/WS2801 \
+  driver/dmx \
+  driver/eeprom \
+  driver/switch \
 
 MOCKS_SRC_DIRS =\
   mocks

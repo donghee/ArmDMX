@@ -3,10 +3,7 @@
 
 extern "C"
 {
-//#include "WS2801.h"
 #include "eeprom.h"
-//#include "LPC11xx.h"
-//#include "gpio.h"
 }
 
 TEST_GROUP(I2C_EEPROM)

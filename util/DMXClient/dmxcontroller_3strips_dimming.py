@@ -119,7 +119,7 @@ class DMXFrame(wx.Frame):
         # DMX initialize
         self.dmx = dmx.DMX()
 	    #self.dmx.open('com1')
-        self.dmx.open('/dev/ttyUSB1')
+        self.dmx.open('/dev/ttyUSB0')
         self.dmx.start_thread()
 
     def on_close(self, event):

@@ -4,7 +4,7 @@
 extern "C"
 {
 #include "WS2801.h"
-#include "utils.h"
+#include "WS2801_utils.h"
 
 #include "LPC11xx.h"
 #include "FakeHardwareGpio.h"
