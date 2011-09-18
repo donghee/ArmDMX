@@ -21,60 +21,55 @@
 int main (void) {
   int ch;
   int i;
-  Strip* strip;
+  Strip* strip1;
+  Strip* strip2;
+  Strip* strip3;
+  Strip* strip4;
 
   GPIOInit();
-//  GPIOSetDir( LED_PORT, LED_BIT, 1 );
-//  GPIOSetValue(LED_PORT, LED_BIT, ON);
 
   GPIOSetDir( INDICATOR_LED_PORT, INDICATOR_LED_BIT, 1 );
   GPIOSetValue(INDICATOR_LED_PORT, INDICATOR_LED_BIT, ON);
 
   init_timer32(0, TIME_INTERVAL); // raise interrupt per 2.5 ms
-  //enable_timer32(0);
 
   //DMXInit(250000);
 
   ch = get_dmx_channel();
-  strip = Strip_new(300, 20,21);
 
-  Strip_setPixels(strip, 0);
-  Strip_show(strip);
-
-  Strip_free(strip);
-
-  strip = Strip_new(60, 20,21);
+  strip1 = Strip_new(60, 0,1);
+  strip2 = Strip_new(60, 2,3);
+  strip3 = Strip_new(60, 4,5);
+  strip4 = Strip_new(60, 6,7);
 
   while (1)
   {
+//	  ToggleGPIOBit(2,3);
+//
+	  for(i=0; i< 60;i++) {
+		  Strip_setPixels(strip1, 0);
+		  Strip_setPixel(strip1,i,16776960);
 
-	  for(i=0; i< 255;i++) {
-	  Strip_setPixels(strip, 0);
-	  Strip_setPixel(strip,i,16776960);
-	  Strip_setPixel(strip,i+5,16776960);
-	  Strip_show(strip);
-//	  delayms(2);
+		  Strip_setPixels(strip2, 0);
+		  Strip_setPixel(strip2,i,16776960);
+
+		  Strip_setPixels(strip3, 0);
+		  Strip_setPixel(strip3,i,16776960);
+
+		  Strip_setPixels(strip4, 0);
+		  Strip_setPixel(strip4,i, 16776960);
+
+
+		  Strip_show(strip1);
+		  Strip_show(strip2);
+		  Strip_show(strip3);
+		  Strip_show(strip4);
 	  }
-	 // rainbow(strip,1);
-	  //ToggleGPIOBit(INDICATOR_LED_PORT,INDICATOR_LED_BIT);
-	  //delay32Ms(0,500);
-//	  rainbow(strip,1);
-//	  if (rx_count !=0) {
-
-////		  Strip_setPixels(strip, color(DMX_buf[100], DMX_buf[101], DMX_buf[102]));
-// 	  	  Strip_setPixels(strip, color(0,200,0));
-// 		  Strip_show(strip);
-//// 		  delayms(5);
-////////
-// 		  Strip_setPixels(strip, color(0,0,0));
-// 		  Strip_show(strip);
-// 		  delayms(5);
-
-
-
-//	  }
   }
 
-//  Strip_free(strip);
+  Strip_free(strip1);
+  Strip_free(strip2);
+  Strip_free(strip3);
+  Strip_free(strip4);
   return 0;
 }

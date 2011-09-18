@@ -12,6 +12,10 @@ typedef struct
 	uint8_t clock_pin;
     uint16_t length;
     uint32_t* pixels;
+
+//    uint8_t* reds;
+//    uint8_t* greens;
+//    uint8_t* blues;
 } Strip;
 
 
@@ -20,6 +24,9 @@ void Strip_free(Strip* self);
 void Strip_setPixel(Strip* self, uint16_t index, uint32_t color);
 void Strip_setPixels(Strip* self, uint32_t color);
 void Strip_show(Strip* strip);
+
+//void Strip_setPixelRGB(Strip* self, uint16_t index, uint8_t red, uint8_t blue, uint8_t green);
+//void Strip_setPixelsRGB(Strip* self, uint8_t red, uint8_t blue, uint8_t green);
 
 uint32_t color(uint8_t r, uint8_t g, uint8_t b);
 void rgb_step(uint32_t color, uint8_t data_pin, uint8_t clock_pin);

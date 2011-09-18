@@ -8,6 +8,11 @@ void pinMode(uint8_t pin, uint8_t mode)
  	GPIOSetDir(PORT, pin, mode);
 }
 
+void portPinMode(uint8_t port, uint8_t pin, uint8_t mode)
+{
+ 	GPIOSetDir(port, pin, mode);
+}
+
 void digitalWrite(uint8_t pin, uint8_t  bitVal)
 {
 	uint8_t PORT = pin/10;
