@@ -41,6 +41,7 @@ if SystemFrequency = 60Mhz, SystemAHBFrequency = 1/4 SystemAHBFrequency,
 10mSec = 150.000-1 counts */
 
 void delay32Ms(uint8_t timer_num, uint32_t delayInMs);
+void delay32Us(uint8_t timer_num, uint32_t delayInUs);
 
 #if CONFIG_TIMER32_DEFAULT_TIMER32_0_IRQHANDLER==1
 extern volatile uint32_t timer32_0_counter;

@@ -25,3 +25,11 @@ uint32_t wheel(uint8_t position)
 		return color(0,position*3, 255-position*3	);
 	}
 }
+
+uint32_t interpolation(uint32_t color1, uint32_t color2)
+{
+	uint32_t color = color1- color2;
+	if (color > 16777215) color = 16777215;
+	if (color <0 ) color = 0;
+	return color;
+}

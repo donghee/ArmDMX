@@ -83,6 +83,37 @@ void delay32Ms(uint8_t timer_num, uint32_t delayInMs)
 }
 
 
+void delay32Us(uint8_t timer_num, uint32_t delayInUs)
+{
+  if (timer_num == 0)
+  {
+    /* setup timer #0 for delay */
+    LPC_TMR32B0->TCR = 0x02;		/* reset timer */
+    LPC_TMR32B0->PR  = 0x00;		/* set prescaler to zero */
+    LPC_TMR32B0->MR0 = delayInUs * ((SystemCoreClock/(LPC_TMR32B0->PR+1)) / 1000000);
+    LPC_TMR32B0->IR  = 0xff;		/* reset all interrrupts */
+    LPC_TMR32B0->MCR = 0x04;		/* stop timer on match */
+    LPC_TMR32B0->TCR = 0x01;		/* start timer */
+
+    /* wait until delay time has elapsed */
+    while (LPC_TMR32B0->TCR & 0x01);
+  }
+  else if (timer_num == 1)
+  {
+    /* setup timer #1 for delay */
+    LPC_TMR32B1->TCR = 0x02;		/* reset timer */
+    LPC_TMR32B1->PR  = 0x00;		/* set prescaler to zero */
+    LPC_TMR32B1->MR0 = delayInUs * ((SystemCoreClock/(LPC_TMR32B0->PR+1)) / 1000000);
+    LPC_TMR32B1->IR  = 0xff;		/* reset all interrrupts */
+    LPC_TMR32B1->MCR = 0x04;		/* stop timer on match */
+    LPC_TMR32B1->TCR = 0x01;		/* start timer */
+
+    /* wait until delay time has elapsed */
+    while (LPC_TMR32B1->TCR & 0x01);
+  }
+  return;
+}
+
 #if CONFIG_TIMER32_DEFAULT_TIMER32_0_IRQHANDLER==1
 /******************************************************************************
 ** Function name:		TIMER32_0_IRQHandler
