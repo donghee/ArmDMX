@@ -1,0 +1,8 @@
+
+Sep 21, 2011 02:30:42.01 NEW SESSION
+Sep 21, 2011 02:30:42.01 Error: No running window found
+Sep 21, 2011 02:30:42.07 Xlib:  extension "RANDR" missing on display ":0.0".
+Sep 21, 2011 02:30:42.36 MozRepl: Listening...
+Sep 21, 2011 02:30:42.68 MozRepl: Closing...
+Sep 21, 2011 02:30:44.53 LoadPlugin: failed to initialize shared library /opt/real/RealPlayer/mozilla/nphelix.so [/opt/real/RealPlayer/mozilla/nphelix.so: wrong ELF class: ELFCLASS32]
+Sep 21, 2011 02:30:55.88 Running global cleanup code from study base classes.
