@@ -75,7 +75,7 @@ void rgb_step(uint32_t color, uint8_t data_pin, uint8_t clock_pin)
 	int8_t i;
     for (i=23; i>=0; i--) {
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<clock_pin] = 0;
-    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<data_pin] = ((color>> i)<< data_pin);
+    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<data_pin] = (color>> i)<< data_pin;
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<clock_pin] = 0xff;
 	}
 }
@@ -101,10 +101,11 @@ void rgb_steps(uint16_t index, Strip* strip1, Strip* strip2, Strip* strip3, Stri
     for (i=23; i>=0; i--) {
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_CLOCKPINS_MASK] = 0;
 
-    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_DATAPINS_MASK] =
-    			(strip1->pixels[index]>> i) << (strip1->data_pin) | (strip2->pixels[index]>> i) << (strip2->data_pin) |
-    			(strip3->pixels[index]>> i) << (strip3->data_pin) | (strip4->pixels[index]>> i) << (strip4->data_pin) ;
+      	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_DATAPINS_MASK] =
+    			((strip1->pixels[index]>> i) << strip1->data_pin) | ((strip2->pixels[index]>> i) << strip2->data_pin) |
+    			((strip3->pixels[index]>> i) << strip3->data_pin) | ((strip4->pixels[index]>> i) << strip4->data_pin) ;
 
+    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_DATAPINS_MASK] = (strip1->pixels[index]>> i) << strip1->data_pin;
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_CLOCKPINS_MASK] = 0xff;
 
 	}

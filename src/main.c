@@ -1,7 +1,6 @@
 #include "driver_config.h"
 #include "target_config.h"
 
-
 #include "gpio.h"
 #include "small_gpio.h"
 #include "timer32.h"
@@ -83,7 +82,7 @@ int main (void) {
 //		  Strip_show(strip3);
 //		  Strip_show(strip4);
 
-		 Strip_shows(strip1,strip2,strip3,strip4);
+ 	 Strip_shows(strip1,strip2,strip3,strip4);
 
 	  } else if (strip_mode == 1) {
 		  if (i >= strip1->length) {
