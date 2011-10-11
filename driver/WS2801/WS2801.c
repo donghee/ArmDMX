@@ -70,16 +70,9 @@ void Strip_show(Strip* strip)
 void rgb_step(uint32_t color, uint8_t data_pin, uint8_t clock_pin)
 {
 	uint32_t i;
-    for (i=0b100000000000000000000000; i>0; i>>=1) {
-    	// clock low _
-//    	GPIOSetValue(LED_STRIP_PORT,clock_pin,LOW);
-    	// use LPC_GPIO MASKED ACCESS for speed up;
+    for (i=24; i>0; i--) {
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<clock_pin] = (0<<clock_pin);
-    	// data high or low -_
-//     	GPIOSetValue(LED_STRIP_PORT,data_pin,(1<<!(color&i)));
-    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<data_pin] = ((1<<!(color & i)<< data_pin));
-    	// clock low _
-//    	GPIOSetValue(LED_STRIP_PORT,clock_pin,HIGH);
+    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<data_pin] = ((color>> i)<< data_pin);
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<clock_pin] = (1<<clock_pin);
 	}
 }

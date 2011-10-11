@@ -58,8 +58,7 @@ int main (void) {
 
   while (1)
   {
-//	  ToggleGPIOBit(2,1);
-
+ 	  ToggleGPIOBit(INDICATOR_LED_PORT,INDICATOR_LED_BIT);
 	  // update strip properties
 	  if (rx_count !=0) {
 		  red = DMX_buf[100]; // ch
