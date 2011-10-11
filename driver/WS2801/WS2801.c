@@ -57,7 +57,6 @@ void Strip_show(Strip* strip)
 {
 	uint16_t i;
 
-//	clock low _
 	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<(strip->clock_pin)] = 0;
 	delay32Us(0,500);
 
@@ -66,7 +65,7 @@ void Strip_show(Strip* strip)
 		rgb_step(strip->pixels[i], strip->data_pin, strip->clock_pin);
 	}
 	// clock low _
-	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<(strip->clock_pin)] = 0;
+	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<(strip->clock_pin)] =0;
 }
 
 void rgb_step(uint32_t color, uint8_t data_pin, uint8_t clock_pin)
@@ -76,5 +75,37 @@ void rgb_step(uint32_t color, uint8_t data_pin, uint8_t clock_pin)
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<clock_pin] = 0;
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<data_pin] = (color>> i)<< data_pin;
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1<<clock_pin] = 0xff;
+	}
+}
+
+
+void Strip_shows(Strip* strip1, Strip* strip2, Strip* strip3, Strip* strip4)
+{
+	uint16_t i;
+
+	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_CLOCKPINS_MASK] = 0;
+	delay32Us(0,500);
+
+	for (i = 0; i < strip1->length; i++) // TODO length is largest length of strips
+	{
+		rgb_steps(strip1->pixels[i], strip1->data_pin,
+				strip2->pixels[i], strip2->data_pin,
+				strip3->pixels[i], strip3->data_pin,
+				strip4->pixels[i], strip4->data_pin);
+	}
+	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_CLOCKPINS_MASK] = 0;
+}
+
+void rgb_steps(uint32_t color1, uint8_t data_pin1, uint32_t color2, uint8_t data_pin2,
+				 uint32_t color3, uint8_t data_pin3, uint32_t color4, uint8_t data_pin4)
+{
+	int8_t i;
+    for (i=23; i>=0; i--) {
+    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_CLOCKPINS_MASK] = 0;
+      	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_DATAPINS_MASK] =
+      			((color1>> i) << data_pin1) | ((color2>> i) << data_pin2) |
+      			((color3>> i) << data_pin3) | ((color4>> i) << data_pin4);
+    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_CLOCKPINS_MASK] = 0xff;
+
 	}
 }

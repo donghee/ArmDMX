@@ -23,7 +23,9 @@ Strip* Strip_new(uint16_t led_size, uint8_t data_pin, uint8_t clock_pin);
 void Strip_free(Strip* self);
 void Strip_setPixel(Strip* self, uint16_t index, uint32_t color);
 void Strip_setPixels(Strip* self, uint32_t color);
-void Strip_show(Strip* strip);
+//void Strip_show(Strip* strip);
+void Strip_shows(Strip* strip1, Strip* strip2, Strip* strip3, Strip* strip4);
+
 
 //void Strip_setPixelRGB(Strip* self, uint16_t index, uint8_t red, uint8_t blue, uint8_t green);
 //void Strip_setPixelsRGB(Strip* self, uint8_t red, uint8_t blue, uint8_t green);

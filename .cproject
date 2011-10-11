@@ -707,7 +707,7 @@
 									<listOptionValue builtIn="false" value="../config"/>
 									<listOptionValue builtIn="false" value="../driver"/>
 								</option>
-								<option id="com.crt.advproject.gcc.exe.debug.option.optimization.level.756493910" name="Optimization Level" superClass="com.crt.advproject.gcc.exe.debug.option.optimization.level" value="gnu.c.optimization.level.most" valueType="enumerated"/>
+								<option id="com.crt.advproject.gcc.exe.debug.option.optimization.level.756493910" name="Optimization Level" superClass="com.crt.advproject.gcc.exe.debug.option.optimization.level" value="gnu.c.optimization.level.optimize" valueType="enumerated"/>
 								<option id="com.crt.advproject.gcc.exe.debug.option.debugging.level.445461813" name="Debug Level" superClass="com.crt.advproject.gcc.exe.debug.option.debugging.level" value="gnu.c.debugging.level.none" valueType="enumerated"/>
 								<inputType id="com.crt.advproject.compiler.input.65915895" superClass="com.crt.advproject.compiler.input"/>
 							</tool>
@@ -723,7 +723,7 @@
 							<tool id="com.crt.advproject.link.exe.debug.1067109512" name="MCU Linker" superClass="com.crt.advproject.link.exe.debug">
 								<option id="com.crt.advproject.link.arch.925110968" name="Architecture" superClass="com.crt.advproject.link.arch" value="com.crt.advproject.link.target.cm0" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.thumb.2137733462" name="Thumb mode" superClass="com.crt.advproject.link.thumb" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.1033942930" name="Linker script" superClass="com.crt.advproject.link.script" value="&quot;DMX_spike_Debug.ld&quot;" valueType="string"/>
+								<option id="com.crt.advproject.link.script.1033942930" name="Linker script" superClass="com.crt.advproject.link.script" value="&quot;DMX_spike_Release.ld&quot;" valueType="string"/>
 								<option id="com.crt.advproject.link.manage.180463856" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
 								<option id="gnu.c.link.option.nostdlibs.1450226744" name="No startup or default libs (-nostdlib)" superClass="gnu.c.link.option.nostdlibs" value="true" valueType="boolean"/>
 								<option id="gnu.c.link.option.other.153891977" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" valueType="stringList">

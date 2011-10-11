@@ -119,13 +119,13 @@ class DMXFrame(wx.Frame):
 
     def on_slider_update(self, event):
         # Strip 1 
-        self.strip1_color = (self.strip1_g_slider.GetValue(),self.strip1_b_slider.GetValue(),self.strip1_r_slider.GetValue())
+        self.strip1_color = (self.strip1_r_slider.GetValue(),self.strip1_g_slider.GetValue(),self.strip1_b_slider.GetValue())
         self.strip1_label.SetForegroundColour(wx.Colour(*self.strip1_color))
 
         self.strip1_speed = self.strip1_speed_slider.GetValue()
 
         # Strip 2 
-        self.strip2_color = (self.strip2_g_slider.GetValue(),self.strip2_b_slider.GetValue(),self.strip2_r_slider.GetValue())
+        self.strip2_color = (self.strip2_r_slider.GetValue(),self.strip2_g_slider.GetValue(),self.strip2_b_slider.GetValue())
         self.strip2_label.SetForegroundColour(wx.Colour(*self.strip2_color))
 
         # self.strip2_speed = self.strip2_speed_slider.GetValue()

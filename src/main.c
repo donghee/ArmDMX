@@ -48,10 +48,10 @@ int main (void) {
 
   ch = get_dmx_channel();
 
-  strip1 = Strip_new(256, 0,1);
-  strip2 = Strip_new(256, 2,3);
-  strip3 = Strip_new(256, 4,5);
-  strip4 = Strip_new(256, 6,7);
+  strip1 = Strip_new(160, 0,1);
+  strip2 = Strip_new(160, 2,3);
+  strip3 = Strip_new(160, 4,5);
+  strip4 = Strip_new(160, 6,7);
 
   i = 0;
 
@@ -76,35 +76,25 @@ int main (void) {
 		  Strip_setPixels(strip3,c);
 		  Strip_setPixels(strip4,c);
 
-		  Strip_show(strip1);
-		  Strip_show(strip2);
-		  Strip_show(strip3);
-		  Strip_show(strip4);
-
+		  Strip_shows(strip1, strip2, strip3, strip4);
 	  } else if (strip_mode == 1) {
 		  if (i >= strip1->length) {
 			  i=0;
 		  }
-
 		  Strip_setPixels(strip1, 0);
 		  Strip_setPixel(strip1,i,c);
 
-//		  for(j=0; j<20; j++) {
-//			  Strip_setPixel(strip1,i+j,interpolation(c,4));
-//		  }
-//		  Strip_setPixels(strip2, 0);
-//		  Strip_setPixel(strip2,i,c);
-//
-//		  Strip_setPixels(strip3, 0);
-//		  Strip_setPixel(strip3,i,c);
-////
-//		  Strip_setPixels(strip4, 0);
-//		  Strip_setPixel(strip4,i, c);
+		  Strip_setPixels(strip2, 0);
+		  Strip_setPixel(strip2,i,c);
 
-		  Strip_show(strip1);
-		  Strip_show(strip2);
-		  Strip_show(strip3);
-		  Strip_show(strip4);
+		  Strip_setPixels(strip3, 0);
+		  Strip_setPixel(strip3,i,c);
+
+		  Strip_setPixels(strip4, 0);
+		  Strip_setPixel(strip4,i, c);
+
+
+		  Strip_shows(strip1, strip2, strip3, strip4);
 //		  delayms(strip_speed);
 		  i++;
 	  }
