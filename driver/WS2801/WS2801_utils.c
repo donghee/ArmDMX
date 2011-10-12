@@ -1,6 +1,11 @@
 #include "WS2801_utils.h"
 #include "WS2801.h"
 
+
+void noise(Strip* self)
+{
+//	Strip_setPixel(strip, rand()); // TODO check, rand();
+}
 void rainbow(Strip* self, uint8_t wait)
 {
 	uint16_t i,j;
@@ -10,6 +15,14 @@ void rainbow(Strip* self, uint8_t wait)
 		}
         Strip_show(self);
 		delayms(wait);
+	}
+}
+
+void rainbow2(Strip* self, uint8_t j, uint8_t length)
+{
+	uint16_t i;
+	for (i =0; i< self->length; i++) {
+		Strip_setPixel(self, i, wheel(((i*length)+j) %255));
 	}
 }
 

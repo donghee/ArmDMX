@@ -5,6 +5,7 @@
 #include "WS2801.h"
 
 void rainbow(Strip* strip, uint8_t wait);
+void rainbow2(Strip* self, uint8_t j, uint8_t length);
 
 uint32_t wheel(uint8_t position);
 

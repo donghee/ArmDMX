@@ -16,6 +16,10 @@ typedef struct
     uint16_t length;
     volatile uint32_t* pixels;
 
+    uint32_t color;
+    uint8_t mode; // animation mode;
+    uint8_t cursor; //animation strip cursor;
+
 //    uint8_t* reds;
 //    uint8_t* greens;
 //    uint8_t* blues;
