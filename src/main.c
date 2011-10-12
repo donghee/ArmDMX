@@ -93,7 +93,6 @@ int main (void) {
 		  Strip_setPixels(strip4, 0);
 		  Strip_setPixel(strip4,i, c);
 
-
 		  Strip_shows(strip1, strip2, strip3, strip4);
 //		  delayms(strip_speed);
 		  i++;
