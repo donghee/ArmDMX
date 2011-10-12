@@ -6,12 +6,15 @@
 #include <stdlib.h>
 #include "LPC11xx.h"
 
+#include "driver_config.h"
+#include "small_gpio.h"
+
 typedef struct
 {
 	uint8_t data_pin;
 	uint8_t clock_pin;
     uint16_t length;
-    uint32_t* pixels;
+    volatile uint32_t* pixels;
 
 //    uint8_t* reds;
 //    uint8_t* greens;

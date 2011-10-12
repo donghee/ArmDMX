@@ -1,9 +1,12 @@
 import serial
 import threading
+import Queue
 
 SOM_VALUE = 0x7E
 EOM_VALUE = 0xE7
 OUTPUT_ONLY_SEND_DMX_LABEL = 6
+
+q = Queue.Queue()
 
 class DMX:
 
@@ -62,7 +65,12 @@ class DMX:
         
     def tx_thread(self):
         while self.alive.isSet():
+          try:
+            # q.get()
+            # print 'pass'
             self._write(OUTPUT_ONLY_SEND_DMX_LABEL, self.data, self.data_size)
+          except Queue.Empty as e:
+            continue
 
     def close(self):
         self.ser.close()

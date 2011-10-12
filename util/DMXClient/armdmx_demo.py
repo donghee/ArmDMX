@@ -1,5 +1,6 @@
 import wx
 import dmx
+import sys
 
 ID_EXIT = wx.NewId()
 
@@ -100,10 +101,14 @@ class DMXFrame(wx.Frame):
 
         # DMX initialize
 
+        if len(sys.argv) !=2:
+          print 'Usage: armdmx_demo.py /dev/ttyUSB0'
+          sys.exit(1)
+        port = sys.argv[1]
         self.dmx = dmx.DMX()
-	    #self.dmx.open('com1')
-        self.dmx.open('/dev/ttyUSB0')
+        self.dmx.open(port)
         self.dmx.start_thread()
+        print 'started'
 
     def on_close(self, event):
         self.Close()
