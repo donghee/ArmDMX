@@ -273,14 +273,10 @@ int main (void) {
 	  while (1)
 	  {
 			if (rx_count !=0) {
-				//strip = strip1;
 				strip1->color = color(DMX_buf[DMX_channel],DMX_buf[DMX_channel+1],DMX_buf[DMX_channel+2]);
-				strip = strip2;
-				strip->color = color(DMX_buf[DMX_channel+5],DMX_buf[DMX_channel+5+1],DMX_buf[DMX_channel+5+2]);
-				strip = strip3;
-				strip->color = color(DMX_buf[DMX_channel+10],DMX_buf[DMX_channel+10+1],DMX_buf[DMX_channel+10+2]);
-				strip = strip4;
-				strip->color = color(DMX_buf[DMX_channel+15],DMX_buf[DMX_channel+15+1],DMX_buf[DMX_channel+15+2]);
+				strip2->color = color(DMX_buf[DMX_channel+5],DMX_buf[DMX_channel+5+1],DMX_buf[DMX_channel+5+2]);
+				strip3->color = color(DMX_buf[DMX_channel+10],DMX_buf[DMX_channel+10+1],DMX_buf[DMX_channel+10+2]);
+				strip4->color = color(DMX_buf[DMX_channel+15],DMX_buf[DMX_channel+15+1],DMX_buf[DMX_channel+15+2]);
 
 				// Control_status_led();
 				Control_animation_mode();
