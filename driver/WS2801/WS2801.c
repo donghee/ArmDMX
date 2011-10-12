@@ -41,7 +41,7 @@ void Strip_free(Strip* self)
 
 void Strip_setPixel(Strip* self, uint16_t index, uint32_t color)
 {
-//    if (index >= self->length) return;
+    if (index >= self->length) return;
     self->pixels[index] = color;
 }
 

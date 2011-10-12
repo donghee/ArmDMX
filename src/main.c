@@ -23,6 +23,9 @@
 // DMX first channel
 uint8_t DMX_channel;
 
+uint8_t strip_mode;
+uint8_t i;
+
 // LED strips
 Strip* strip1;
 Strip* strip2;
@@ -83,7 +86,6 @@ void dotflow(Strip* strip,uint8_t dotsize,uint8_t cursor, uint32_t color)
 	Strip_setPixels(strip1,0);
 	Strip_setPixel(strip1,cursor,color);
 }
-
 
 void Control_color()
 {
@@ -183,68 +185,113 @@ void Control_speed()
 
 }
 
+void Control_color2()
+{
+	  //strip1
+	  strip = strip1;
+	  if (strip->mode == 0) {
+		  Strip_setPixels(strip,strip->color);
+	  } else if (strip1->mode ==1) {
+		  if (i >= strip4->length) {
+			  i=0;
+		  }
+		  Strip_setPixels(strip,0);
+		  Strip_setPixel(strip,i,strip->color);
+		  Strip_setPixel(strip,i+1,strip->color);
+		  Strip_setPixel(strip,i+2,strip->color);
+		  Strip_setPixel(strip,i+3,strip->color);
+		  Strip_setPixel(strip,i+4,strip->color);
+	  }
+
+
+	  //strip2
+	  strip = strip2;
+
+	  if (strip->mode == 0) {
+		  Strip_setPixels(strip,strip->color);
+	  } else if (strip1->mode ==1) {
+		  if (i >= strip4->length) {
+			  i=0;
+		  }
+		  Strip_setPixels(strip,0);
+		  Strip_setPixel(strip,i,strip->color);
+		  Strip_setPixel(strip,i+1,strip->color);
+		  Strip_setPixel(strip,i+2,strip->color);
+		  Strip_setPixel(strip,i+3,strip->color);
+		  Strip_setPixel(strip,i+4,strip->color);
+	  }
+
+
+	  //strip3
+	  strip = strip3;
+
+	  if (strip->mode == 0) {
+		  Strip_setPixels(strip,strip->color);
+	  } else if (strip1->mode ==1) {
+		  if (i >= strip4->length) {
+			  i=0;
+		  }
+		  Strip_setPixels(strip,0);
+		  Strip_setPixel(strip,i,strip->color);
+		  Strip_setPixel(strip,i+1,strip->color);
+		  Strip_setPixel(strip,i+2,strip->color);
+		  Strip_setPixel(strip,i+3,strip->color);
+		  Strip_setPixel(strip,i+4,strip->color);
+	  }
+
+
+	  //strip4
+	  strip = strip4;
+	  if (strip->mode == 0) {
+		  Strip_setPixels(strip,strip->color);
+	  } else if (strip1->mode ==1) {
+		  if (i >= strip4->length) {
+			  i=0;
+		  }
+		  Strip_setPixels(strip,0);
+		  Strip_setPixel(strip,i,strip->color);
+		  Strip_setPixel(strip,i+1,strip->color);
+		  Strip_setPixel(strip,i+2,strip->color);
+		  Strip_setPixel(strip,i+3,strip->color);
+		  Strip_setPixel(strip,i+4,strip->color);
+	  }
+
+	  i++;
+}
+
 int main (void) {
-	uint8_t strip_mode, strip_speed, strip_dimming;
-	uint8_t i;
-	uint32_t c;
+	uint8_t strip_speed, strip_dimming;
 
-	Setup();
+	  Setup();
 
-	while (1)
-	{
-//		if (rx_count !=0) {
-//			//strip = strip1;
-//			strip1->color = color(DMX_buf[DMX_channel],DMX_buf[DMX_channel+1],DMX_buf[DMX_channel+2]);
-////			strip = strip2;
-////			strip->color = color(DMX_buf[DMX_channel+5],DMX_buf[DMX_channel+5+1],DMX_buf[DMX_channel+5+2]);
-////			strip = strip3;
-////			strip->color = color(DMX_buf[DMX_channel+10],DMX_buf[DMX_channel+10+1],DMX_buf[DMX_channel+10+2]);
-////			strip = strip4;
-////			strip->color = color(DMX_buf[DMX_channel+15],DMX_buf[DMX_channel+15+1],DMX_buf[DMX_channel+15+2]);
-//			Control_status_led();
-//			Control_animation_mode();
-//		}
-//
-//		Control_color();
-//		Control_dimming();
-//		Control_speed();
+	  GPIOInit();
+	  init_timer32(0, TIME_INTERVAL); // raise interrupt per 2.5 ms
+	  DMXInit(250000);
 
-		  if (rx_count !=0) {
-			  ToggleGPIOBit(INDICATOR_LED_PORT,INDICATOR_LED_BIT);
+	  i = 0;
 
-			  strip_mode = DMX_buf[103];  // ch + 3
-			  strip_speed = DMX_buf[104]+1; // ch + 4
-			  strip_dimming = DMX_buf[105]; // ch + 5
-			  c = color(DMX_buf[100], DMX_buf[101],DMX_buf[102]);
-		  }
-		  if (strip_mode == 0) {
-			  Strip_setPixels(strip1,c);
-			  Strip_setPixels(strip2,c);
-			  Strip_setPixels(strip3,c);
-			  Strip_setPixels(strip4,c);
+	  while (1)
+	  {
+			if (rx_count !=0) {
+				//strip = strip1;
+				strip1->color = color(DMX_buf[DMX_channel],DMX_buf[DMX_channel+1],DMX_buf[DMX_channel+2]);
+				strip = strip2;
+				strip->color = color(DMX_buf[DMX_channel+5],DMX_buf[DMX_channel+5+1],DMX_buf[DMX_channel+5+2]);
+				strip = strip3;
+				strip->color = color(DMX_buf[DMX_channel+10],DMX_buf[DMX_channel+10+1],DMX_buf[DMX_channel+10+2]);
+				strip = strip4;
+				strip->color = color(DMX_buf[DMX_channel+15],DMX_buf[DMX_channel+15+1],DMX_buf[DMX_channel+15+2]);
 
-			  Strip_shows(strip1, strip2, strip3, strip4);
+				// Control_status_led();
+				Control_animation_mode();
+			}
 
-		  } else if (strip_mode == 1) {
-			  if (i >= strip1->length) {
-				  i=0;
-			 }
+			Control_color2();
+//			Control_dimming();
+//			Control_speed();
 
-			  Strip_setPixels(strip1, 0);
-			  Strip_setPixel(strip1,i,c);
+		  Strip_shows(strip1, strip2, strip3, strip4);
 
-			  Strip_setPixels(strip2, 0);
-			  Strip_setPixel(strip2,i,c);
-
-			  Strip_setPixels(strip3, 0);
-			  Strip_setPixel(strip3,i,c);
-
-			  Strip_setPixels(strip4, 0);
-			  Strip_setPixel(strip4,i, c);
-
-			  Strip_shows(strip1, strip2, strip3, strip4);
-			  i++;
-		  }
   }
 
   Strip_free(strip1);
