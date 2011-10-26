@@ -6,9 +6,6 @@
 #include <stdlib.h>
 #include "LPC11xx.h"
 
-#include "driver_config.h"
-#include "small_gpio.h"
-
 typedef struct
 {
 	uint8_t data_pin;

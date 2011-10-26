@@ -14,7 +14,7 @@ void rainbow(Strip* self, uint8_t wait)
 			Strip_setPixel(self, i, wheel(((i*10)+j) %255));
 		}
         Strip_show(self);
-		delayms(wait);
+		delay32Ms(0,wait);
 	}
 }
 

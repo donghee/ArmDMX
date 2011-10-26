@@ -8,3 +8,5 @@ Debug
 Release
 ws2801_tests
 TAGS
+*.files
+*.out

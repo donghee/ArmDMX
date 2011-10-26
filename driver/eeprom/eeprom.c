@@ -38,30 +38,30 @@ EEPROM* EEPROM_new(uint16_t device_address, uint8_t data_pin, uint8_t clock_pin)
 void start_bit(EEPROM* self)
 {
 	digitalWrite(self->clock_pin, LOW);
-	delayus(i2c_timing);
+	delay32Us(0, i2c_timing);
 
 	digitalWrite(self->data_pin, HIGH);
-	delayus(i2c_timing);
+	delay32Us(0, i2c_timing);
 	digitalWrite(self->clock_pin, HIGH);
-	delayus(i2c_timing);
+	delay32Us(0, i2c_timing);
     /* delayus(1); */
 	digitalWrite(self->data_pin, LOW);
-	delayus(i2c_timing);
+	delay32Us(0, i2c_timing);
 	digitalWrite(self->clock_pin, LOW);
-	delayus(i2c_timing);
+	delay32Us(0, i2c_timing);
 }
 
 void stop_bit(EEPROM* self)
 {
 	digitalWrite(self->clock_pin, LOW);
-	delayus(i2c_timing);
+	delay32Us(0,i2c_timing);
 	digitalWrite(self->data_pin, LOW);
-	delayus(i2c_timing);
+	delay32Us(0,i2c_timing);    
 	digitalWrite(self->clock_pin, HIGH);
-	delayus(i2c_timing);
+	delay32Us(0,i2c_timing);    
     /* delayus(1); */
 	digitalWrite(self->data_pin, HIGH);
-	delayus(i2c_timing);
+	delay32Us(0,i2c_timing);
 }
 
 
@@ -71,15 +71,14 @@ void write_byte(EEPROM* self, uint8_t byte)
     for (i=0b10000000; i>0; i>>=1) 
     {
 	    digitalWrite(self->clock_pin, HIGH);
-        delayus(i2c_timing);
+        delay32Us(0,i2c_timing);
 	    digitalWrite(self->clock_pin, LOW);
-        delayus(i2c_timing);
+        delay32Us(0,i2c_timing);                        
         if (byte & i)
             digitalWrite(self->data_pin, HIGH);
         else 
             digitalWrite(self->data_pin, LOW);
-        delayus(i2c_timing);
-
+        delay32Us(0,i2c_timing);
     }
 }
 
@@ -92,13 +91,13 @@ uint8_t read_byte(EEPROM* self)
     for (i=0b10000000; i>0; i>>=1) 
     {
 	    digitalWrite(self->clock_pin, HIGH);
-        delayus(i2c_timing);
+        delay32Us(0,i2c_timing);                                
 	    digitalWrite(self->clock_pin, LOW);
-        delayus(i2c_timing);
+        delay32Us(0,i2c_timing);                                        
         tmp=digitalRead(self->data_pin);
         if (tmp == HIGH)
             value |= i;
-        delayus(i2c_timing);
+        delay32Us(0,i2c_timing);                                                                                                                        
     }
     return value;
 }
@@ -107,17 +106,17 @@ uint8_t receive_ack(EEPROM* self)
 {
     uint8_t ack;
 	digitalWrite(self->clock_pin, HIGH);
-	delayus(i2c_timing);
+    delay32Us(0,i2c_timing);                                                                                    
     ack = digitalRead(self->data_pin);
     if (ack == LOW)
     {
         digitalWrite(self->clock_pin, LOW);
-        delayus(i2c_timing);
+        delay32Us(0,i2c_timing);                                                                                            
         return ACK_OK;
     }
     else {
         digitalWrite(self->clock_pin, LOW);
-        delayus(i2c_timing);
+        delay32Us(0,i2c_timing);                                                                                                    
         return ACK_ERROR;
     }
 }
@@ -126,11 +125,11 @@ void wait_ack(EEPROM* self)
 {
     //while(receive_ack(self) == ACK_ERROR) {};
     digitalWrite(self->data_pin, HIGH);
-    delayus(i2c_timing);
+    delay32Us(0,i2c_timing);                                                                                                        
 	digitalWrite(self->clock_pin, HIGH);
-	delayus(i2c_timing);
+    delay32Us(0,i2c_timing);                                                                                                            
     digitalWrite(self->clock_pin, LOW);
-	delayus(i2c_timing);
+    delay32Us(0,i2c_timing);                                                                                                                
 }
 
 
@@ -151,7 +150,7 @@ void EEPROM_write_byte(EEPROM* self, uint16_t mem_address, uint8_t data)
 
     stop_bit(self);
 
-    delayms(25); // allow for the programming of the eeprom
+    delay32Ms(0,25); // allow for the programming of the eeprom
 }
 
 

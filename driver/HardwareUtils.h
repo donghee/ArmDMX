@@ -5,7 +5,6 @@
 #include "gpio.h"
 #include "timer32.h"
 
-
 #define HIGH 1
 #define LOW 0
 

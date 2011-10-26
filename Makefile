@@ -68,6 +68,7 @@ INCLUDE_DIRS =\
   driver/dmx \
   driver/eeprom \
   driver/switch \
+  driver/ \
 
 MOCKS_SRC_DIRS =\
   mocks
@@ -84,4 +85,4 @@ ctags:
 	ctags -eR
 	#dir *.h *.cpp *.c /s/b > cscope.files
 	find . \( -name '*.c' -o -name '*.cpp' -o -name '*.cc' -o -name '*.h' -o -name '*.s' -o -name '*.S' \) -print > cscope.files
-	#cscope -b
+	cscope -b

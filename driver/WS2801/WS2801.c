@@ -26,6 +26,7 @@ Strip* Strip_new(uint16_t length, uint8_t data_pin, uint8_t clock_pin)
 	{
         self->pixels[i] = 0;
     }
+    
     portPinMode(LED_STRIP_PORT, data_pin, OUT);
     portPinMode(LED_STRIP_PORT, clock_pin, OUT);
     
@@ -104,14 +105,10 @@ void rgb_steps(uint32_t color1, uint8_t data_pin1, uint32_t color2, uint8_t data
 	int8_t i;
     for (i=23; i>=0; i--) {
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_CLOCKPINS_MASK] = 0;
-    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[64] =
-      			((color4>> i) << 6);
-    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[16] =
-      			((color3>> i) << 4);
-    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[4] =
-      			((color2>> i) << 2);
-    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1] =
-      			(color1>> i);
+    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[64] = ((color4>> i) << 6);
+    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[16] = ((color3>> i) << 4);
+    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[4] = ((color2>> i) << 2);
+    	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[1] = (color1>> i);
     	LPC_GPIO[LED_STRIP_PORT]->MASKED_ACCESS[ALL_CLOCKPINS_MASK] = 0xff;
 	}
 }
