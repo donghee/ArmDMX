@@ -57,21 +57,21 @@ SRC_DIRS = \
 # - Consequently - AllTests.h containing the IMPORT_TEST_GROUPS is not needed
 # - 
 TEST_SRC_DIRS = \
-  tests \
+  tests/\
 
 #includes for all compiles
 INCLUDE_DIRS =\
   $(CPPUTEST_HOME)/include/\
-  include/ \
-  tests/ \
-  driver/WS2801 \
-  driver/dmx \
-  driver/eeprom \
-  driver/switch \
-  driver/ \
+  include/\
+  mocks/\
+  tests/\
+  driver/WS2801\
+  driver/dmx\
+  driver/eeprom\
+  driver/switch\
 
 MOCKS_SRC_DIRS =\
-  mocks
+  mocks/\ 
 
 #Flags to pass to ld
 LDFLAGS +=

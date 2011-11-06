@@ -41,8 +41,8 @@ class DMXFrame(wx.Frame):
         self.strip1_speed_slider = wx.Slider(self.panel, -1, 0, 0, 255, pos=(offset+40*4,10), size=(-1 ,255), style= wx.SL_VERTICAL |wx.SL_AUTOTICKS | wx.SL_LABELS)
         self.strip1_speed_slider.SetTickFreq(5, 1)
 
-        self.strip1_dimming_slider = wx.Slider(self.panel, -1, 0, 0, 255, pos=(offset+40*5,10), size=(-1 ,255), style= wx.SL_VERTICAL |wx.SL_AUTOTICKS | wx.SL_LABELS)
-        self.strip1_dimming_slider.SetTickFreq(5, 1)
+        # self.strip1_dimming_slider = wx.Slider(self.panel, -1, 0, 0, 255, pos=(offset+40*5,10), size=(-1 ,255), style= wx.SL_VERTICAL |wx.SL_AUTOTICKS | wx.SL_LABELS)
+        # self.strip1_dimming_slider.SetTickFreq(5, 1)
 
         wx.StaticText(self.panel, -1, 'R', (offset+40,280))
         wx.StaticText(self.panel, -1, 'G', (offset+40*2,280))
@@ -55,9 +55,9 @@ class DMXFrame(wx.Frame):
         self.strip1_label.SetFont(font)
 
 
-        self.cb = wx.CheckBox(self.panel, -1, '(direct/flow)', (offset+230, 40))
-        self.cb.SetValue(True)
-        wx.EVT_CHECKBOX(self, self.cb.GetId(), self.on_set_mode)
+        self.strip1_cb = wx.CheckBox(self.panel, -1, '(direct/flow)', (offset+230, 40))
+        self.strip1_cb.SetValue(True)
+        wx.EVT_CHECKBOX(self, self.strip1_cb.GetId(), self.on_set_mode)
 
         wx.StaticLine(self.panel, -1, (offset+350, 30), (1,250),style=wx.LI_VERTICAL)
         
@@ -70,14 +70,23 @@ class DMXFrame(wx.Frame):
         self.strip2_b_slider = wx.Slider(self.panel, -1, 0, 0, 255, pos=(offset+40*3,10), size=(-1 ,255), style= wx.SL_VERTICAL |wx.SL_AUTOTICKS | wx.SL_LABELS)
         self.strip2_b_slider.SetTickFreq(5, 1)
 
+
+        self.strip2_speed_slider = wx.Slider(self.panel, -1, 0, 0, 255, pos=(offset+40*4,10), size=(-1 ,255), style= wx.SL_VERTICAL |wx.SL_AUTOTICKS | wx.SL_LABELS)
+        self.strip2_speed_slider.SetTickFreq(5, 1)
+
         wx.StaticText(self.panel, -1, 'R', (offset+40*1,280))
         wx.StaticText(self.panel, -1, 'G', (offset+40*2,280))
         wx.StaticText(self.panel, -1, 'B', (offset+40*3,280))
+        wx.StaticText(self.panel, -1, 'S', (offset+40*4,280))
 
 
         self.strip2_label = wx.StaticText(self.panel, -1, 'Strip2', (20+offset,300))
         font = wx.Font(20, wx.MODERN, wx.NORMAL, wx.BOLD)
         self.strip2_label.SetFont(font)
+
+        self.strip2_cb = wx.CheckBox(self.panel, -1, '(direct/flow)', (offset+230, 40))
+        self.strip2_cb.SetValue(True)
+        wx.EVT_CHECKBOX(self, self.strip2_cb.GetId(), self.on_set_mode)
 
         wx.StaticLine(self.panel, -1, (offset+170, 30), (1,250),style=wx.LI_VERTICAL)
 
@@ -115,11 +124,18 @@ class DMXFrame(wx.Frame):
 
     def on_set_mode(self, event):
         # Strip 1 
-        direct=self.cb.GetValue()
+        direct=self.strip1_cb.GetValue()
         if direct:
             self.strip1_mode = 0 # direct
         else:
             self.strip1_mode = 1 # dot-flow
+
+        direct=self.strip2_cb.GetValue()
+        if direct:
+            self.strip2_mode = 0 # direct
+        else:
+            self.strip2_mode = 1 # dot-flow
+
         self.on_dmx_update(0)
 
     def on_slider_update(self, event):
@@ -133,24 +149,38 @@ class DMXFrame(wx.Frame):
         self.strip2_color = (self.strip2_r_slider.GetValue(),self.strip2_g_slider.GetValue(),self.strip2_b_slider.GetValue())
         self.strip2_label.SetForegroundColour(wx.Colour(*self.strip2_color))
 
-        # self.strip2_speed = self.strip2_speed_slider.GetValue()
+        self.strip2_speed = self.strip2_speed_slider.GetValue()
 
         self.on_dmx_update(0)
 
     def on_dmx_update(self, event):
-        self.dmx.write(100, self.strip1_color[0])
-        self.dmx.write(101, self.strip1_color[1])
-        self.dmx.write(102, self.strip1_color[2])
-        self.dmx.write(103, self.strip1_mode)
-        self.dmx.write(104, self.strip1_speed)
-        self.dmx.write(105, self.strip1_dimming)
+        # self.dmx.write(100, self.strip1_color[0])
+        # self.dmx.write(101, self.strip1_color[1])
+        # self.dmx.write(102, self.strip1_color[2])
+        # self.dmx.write(103, self.strip1_mode)
+        # self.dmx.write(104, self.strip1_speed)
+        # self.dmx.write(105, self.strip1_dimming)
 
-        self.dmx.write(106, self.strip2_color[0])
-        self.dmx.write(107, self.strip2_color[1])
-        self.dmx.write(108, self.strip2_color[2])
-        self.dmx.write(109, self.strip2_mode)
-        self.dmx.write(110, self.strip2_speed)
-        self.dmx.write(111, self.strip2_dimming)
+        self.dmx.write(105, self.strip2_color[0])
+        self.dmx.write(106, self.strip2_color[1])
+        self.dmx.write(107, self.strip2_color[2])
+        self.dmx.write(108, self.strip2_mode)
+        self.dmx.write(109, self.strip2_speed)
+
+        # self.dmx.write(121, self.strip2_dimming)
+
+        self.dmx.write(110, self.strip1_color[0])
+        self.dmx.write(111, self.strip1_color[1])
+        self.dmx.write(112, self.strip1_color[2])
+        self.dmx.write(113, self.strip1_mode)
+        self.dmx.write(114, self.strip1_speed)
+
+        self.dmx.write(115, self.strip2_color[0])
+        self.dmx.write(116, self.strip2_color[1])
+        self.dmx.write(117, self.strip2_color[2])
+        self.dmx.write(118, self.strip2_mode)
+        self.dmx.write(119, self.strip2_speed)
+ 
 
         self.dmx.update()
 

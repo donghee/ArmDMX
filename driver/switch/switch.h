@@ -7,7 +7,7 @@ uint8_t encode_rotary_switch(uint8_t code1, uint8_t code2, uint8_t code4, uint8_
                            code8);
 uint8_t read_rotary_switch(uint8_t* ports, uint8_t* pins);
 
-uint8_t get_dmx_channel(void);
+uint16_t get_dmx_channel(void);
 
 #endif
 

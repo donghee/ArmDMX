@@ -8,37 +8,49 @@ extern "C"
 
 #include "LPC11xx.h"
 #include "FakeHardwareGpio.h"
-} 
+}
+
 TEST_GROUP(WS2801)
 {
 
-    static void mock_pinMode(uint8_t pin, uint8_t mode) {
-        mock().actualCall("pinMode").
+    static void mock_GPIOSetDir(uint8_t port, uint8_t pin, uint8_t mode) {
+        mock().actualCall("GPIOSetDir").
+            withParameter("port", port).            
             withParameter("pin", pin).
             withParameter("mode", mode);
     }
 
-    static void mock_digitalWrite(uint8_t pin, uint8_t bitVal) {
-        mock().actualCall("digitalWrite").
-            withParameter("pin", pin).
-            withParameter("bitVal", bitVal);
+    static void mock_delay32Us(uint8_t port, uint32_t micros)
+    {
+        mock().actualCall("delay32Us").withParameter("port", port).withParameter("micros",(int)micros);
     }
-    
+
 	void setup()
     {
-        UT_PTR_SET(pinMode, &mock_pinMode);
-        UT_PTR_SET(digitalWrite, &mock_digitalWrite);        
+        UT_PTR_SET(GPIOSetDir, &mock_GPIOSetDir);
+        UT_PTR_SET(delay32Us, &mock_delay32Us);        
     }
     void teardown()
     {
     }
 };
 
-void mock_expect_pinMode(int pin1, int pin2, int value)
+void mock_expect_GPIOSetDir(int port, int pin1, int pin2, int value)
 {
-    mock().expectOneCall("pinMode").withParameter("pin", pin1).withParameter("mode",value);
-    mock().expectOneCall("pinMode").withParameter("pin", pin2).withParameter("mode",value);
+    mock().expectOneCall("GPIOSetDir").withParameter("port",
+                                                     port).withParameter("pin", pin1).withParameter("mode",value);
+    
+    mock().expectOneCall("GPIOSetDir").withParameter("port",
+                                                     port).withParameter("pin", pin2).withParameter("mode",value);
+    
 }
+
+void mock_expect_delay32Us(int port, int micros)
+{
+    mock().expectOneCall("delay32Us").withParameter("port",
+                                                    port).withParameter("micros", micros);
+}
+
 
 TEST(WS2801, color)
 {
@@ -48,11 +60,11 @@ TEST(WS2801, color)
 
 TEST(WS2801, Strip_new_free)
 {
-    mock_expect_pinMode(3,4,1);
+    mock_expect_GPIOSetDir(2, 3,4,1);
 
 	uint16_t led_size = 100;
     Strip* strip = Strip_new(led_size, 3, 4);
-    
+
 	uint16_t i;
 	for (i=0;i<100;i++)
 	{
@@ -63,7 +75,7 @@ TEST(WS2801, Strip_new_free)
 
 TEST(WS2801, Strip_setPixel)
 {
-    mock_expect_pinMode(3,4,1);
+    mock_expect_GPIOSetDir(2, 3,4,1);
     
     uint16_t led_size = 10;
     Strip* strip = Strip_new(led_size, 3,4);
@@ -78,7 +90,7 @@ TEST(WS2801, Strip_setPixel)
 
 TEST(WS2801, Strip_setPixels)
 {
-    mock_expect_pinMode(3,4,1);
+    mock_expect_GPIOSetDir(2, 3,4,1);
 
     uint16_t led_size = 10;
     Strip* strip = Strip_new(led_size, 3,4);
@@ -95,9 +107,11 @@ TEST(WS2801, Strip_show)
     int data_pin = 3;
     int clock_pin = 4;
     uint16_t led_size = 10;
-    
-    UT_PTR_SET(pinMode, &Fake_pinMode);                   
-    UT_PTR_SET(digitalWrite, &Fake_digitalWrite);               
+
+    mock_expect_GPIOSetDir(2, 3,4,1);
+    mock_expect_delay32Us(0,500);    
+    // UT_PTR_SET(pinMode, &Fake_pinMode);                   
+    // UT_PTR_SET(digitalWrite, &Fake_digitalWrite);               
 
     Strip* strip = Strip_new(led_size, data_pin,clock_pin);
     Strip_setPixel(strip, 0, color(0,0,1));
@@ -107,31 +121,30 @@ TEST(WS2801, Strip_show)
     Strip_free(strip);
 }
 
-TEST(WS2801, Strip_rgb_setup)
-{
-    int data_pin = 3;
-    int clock_pin = 4;
+// TEST(WS2801, Strip_rgb_setup)
+// {
+//     int data_pin = 3;
+//     int clock_pin = 4;
     
-    UT_PTR_SET(pinMode, &Fake_pinMode);
+//     UT_PTR_SET(pinMode, &Fake_pinMode);
     
-    int i;
-    for (i=0; i<24; i++)
-        {
-            mock().expectOneCall("digitalWrite").withParameter("pin",
-                                                               clock_pin).withParameter("bitVal",LOW);
-            mock().expectOneCall("digitalWrite").withParameter("pin",
-                                                               data_pin).withParameter("bitVal",LOW);
-            mock().expectOneCall("digitalWrite").withParameter("pin",
-                                                               clock_pin).withParameter("bitVal",HIGH);
-        }
-    rgb_step(color(0,0,0),data_pin, clock_pin);
-}
+//     int i;
+//     for (i=0; i<24; i++)
+//         {
+//             mock().expectOneCall("digitalWrite").withParameter("pin",
+//                                                                clock_pin).withParameter("bitVal",LOW);
+//             mock().expectOneCall("digitalWrite").withParameter("pin",
+//                                                                data_pin).withParameter("bitVal",LOW);
+//             mock().expectOneCall("digitalWrite").withParameter("pin",
+//                                                                clock_pin).withParameter("bitVal",HIGH);
+//         }
+//     rgb_step(color(0,0,0),data_pin, clock_pin);
+// }
 
 
 TEST(WS2801, Four_Strips) {
-    UT_PTR_SET(pinMode, &Fake_pinMode);    
-    UT_PTR_SET(digitalWrite, &Fake_digitalWrite);
-
+    UT_PTR_SET(GPIOSetDir, &Fake_GPIOSetDir);
+    
     uint8_t i;
 	uint16_t led_size = 100;
     Strip* strip1 = Strip_new(led_size, 3,4);
@@ -184,9 +197,11 @@ TEST(WS2801, Utils_wheel)
 
 TEST(WS2801, Utils_rainbow)
 {
-    UT_PTR_SET(pinMode, &Fake_pinMode);    
-    UT_PTR_SET(digitalWrite, &Fake_digitalWrite);
-    
+    UT_PTR_SET(GPIOSetDir, &Fake_GPIOSetDir);
+
+    // mock_expect_delay32Us(0, 500);
+    // mock_expect_delay32Us(0, 500);    
+        
     uint16_t led_size = 10;
     Strip* strip = Strip_new(led_size, 3,4);    
     // rainbow(strip, 100); //delay is 100 ms

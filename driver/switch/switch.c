@@ -1,13 +1,13 @@
 #include "switch.h"
 
-uint8_t D0_PORT[] = { 1, 1, 1, 1 };
-uint8_t D0_PIN[] = { 1, 2, 4, 5 };
+static uint8_t D0_PORT[] = { 1, 1, 1, 1 };
+static uint8_t D0_PIN[] = { 1, 2, 4, 5 };
 
-uint8_t D1_PORT[] = { 0, 0, 0, 1 };
-uint8_t D1_PIN[] = { 8, 9, 11, 0 };
+static uint8_t D1_PORT[] = { 0, 0, 0, 1 };
+static uint8_t D1_PIN[] = { 8, 9, 11, 0 };
 
-uint8_t D2_PORT[] = { 0, 0, 0, 0 };
-uint8_t D2_PIN[] = { 2, 3, 6, 7 };
+static uint8_t D2_PORT[] = { 0, 0, 0, 0 };
+static uint8_t D2_PIN[] = { 2, 3, 6, 7 };
 
 uint8_t encode_rotary_switch(uint8_t code1, uint8_t code2, uint8_t code4, uint8_t code8)
 {
@@ -23,7 +23,7 @@ uint8_t read_rotary_switch(uint8_t* ports, uint8_t* pins)
 
 	return encode_rotary_switch(code1, code2, code4, code8);
 }
-uint8_t get_dmx_channel()
+uint16_t get_dmx_channel()
 {
     int i=0;
     int ch_one_digit;
